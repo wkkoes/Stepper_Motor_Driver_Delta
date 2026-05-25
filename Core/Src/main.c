@@ -405,7 +405,7 @@ void vLogicTask(void *argument)
     uint32_t adc_raw = 0;
     float real_voltage = 12.0f;
 
-    SystemState_t currentState = STATE_CALIBRATION; //zaczynamy od kalibracji
+    SystemState_t currentState = STATE_CALIBRATION; //zaczynamy od kalibracji na start
 
     HAL_GPIO_WritePin(GPIOB, PWR_CONVERTER_EN_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOA, MOTOR_EN_Pin, GPIO_PIN_SET);
