@@ -1,0 +1,31 @@
+# ==========================================
+# STM32CubeIDE / Eclipse - Ignorowane pliki
+# ==========================================
+
+# 1. Foldery z plikami wynikowymi kompilacji (bardzo ciężkie)
+Debug/
+Release/
+
+# 2. Pliki obiektowe i tymczasowe kompilatora (C/C++)
+*.o
+*.d
+*.su
+*.bak
+*.tmp
+*~
+
+# 3. Skompilowane pliki binarne i mapy pamięci (generują się same przy Build)
+*.elf
+*.hex
+*.bin
+*.map
+*.list
+*.log
+
+# 4. Ustawienia środowiska (zależne od Twojego komputera)
+.metadata/
+*.launch
+
+# 5. Pliki systemowe (Windows / Mac)
+Thumbs.db
+.DS_Store
