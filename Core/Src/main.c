@@ -407,6 +407,7 @@ void vLogicTask(void *argument)
 
     SystemState_t currentState = STATE_CALIBRATION; //zaczynamy od kalibracji na start
 
+    //Odblokowanie przetwornicy i silnika
     HAL_GPIO_WritePin(GPIOB, PWR_CONVERTER_EN_Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOA, MOTOR_EN_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOA, TMC_CS_Pin, GPIO_PIN_SET);
@@ -451,12 +452,12 @@ void vLogicTask(void *argument)
 
         //TCOOLTHRS: StallGuard działa tylko, gdy silnik kręci się
         // szybciej niż ta wartość (żeby nie wyłączał się przy ruszaniu z miejsca)
-        Msg.address = 0x14; Msg.value = 400;
+        Msg.address = 0x94; Msg.value = 400;
         osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever);
 
         // COOLCONF: StallGuard Threshold = SGT
-        // Wartość 0x00050000 to bezpieczny punkt startowy (średnia czułość)
-        Msg.address = 0x6D; Msg.value = 0x00050000;
+        // Wartość 0x00050000 (średnia czułość), zmienic jesli bedzie za mała lub za duza
+        Msg.address = 0xED; Msg.value = 0x00050000;
         osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever);
 
         // XACTUAL na 0 - zeby nie myslał ze jest u celu juz
@@ -493,7 +494,7 @@ void vLogicTask(void *argument)
         Msg.address = 0xA4; Msg.value = 1000;   osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // A1
         Msg.address = 0xA5; Msg.value = 50000;  osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // V1
         Msg.address = 0xA6; Msg.value = 500;    osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // AMAX
-        Msg.address = 0xA7; Msg.value = 200000; osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // VMAX
+        Msg.address = 0xA7; Msg.value = 200000; osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // VM   c AX
         Msg.address = 0xA8; Msg.value = 700;    osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // DMAX
         Msg.address = 0xAA; Msg.value = 1400;   osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // D1
         Msg.address = 0xAB; Msg.value = 10;     osMessageQueuePut(spiQueueHandle, &Msg, 0, osWaitForever); // VSTOP
