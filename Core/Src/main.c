@@ -12,6 +12,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef enum
+{
+	STATE_CALIBRATION = 0,
+	STATE_RUNNING
+}SystemState_t;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -38,6 +43,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE BEGIN PV */
 osThreadId_t logicTaskHandle;
 osThreadId_t canTaskHandle;
+osMessageQueueId_t canQueueHandle;
 
 const osThreadAttr_t logicTask_attributes = { .name = "LogicTask", .stack_size = 512 * 4, .priority = osPriorityNormal };
 const osThreadAttr_t canTask_attributes = { .name = "CANTask", .stack_size = 256 * 4, .priority = osPriorityNormal };
@@ -91,6 +97,7 @@ int main(void)
   osKernelInitialize();
 
   /* USER CODE BEGIN RTOS_QUEUES */
+  canQueueHandle = osMessageQueueNew(10, sizeof(int32_t), NULL);
   /* USER CODE END RTOS_QUEUES */
 
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
@@ -226,10 +233,6 @@ void StartDefaultTask(void *argument)
 }
 /* USER CODE END Header_StartDefaultTask */
 
-/* ******************************************************************
- * WYGENEROWANE FUNKCJE CUBEMX
- * ****************************************************************** */
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM6) {
@@ -249,9 +252,9 @@ void assert_failed(uint8_t *file, uint32_t line)
 {
 }
 #endif /* USE_FULL_ASSERT */
+
 /**
   * @brief System Clock Configuration
-  * @retval None
   */
 void SystemClock_Config(void)
 {
