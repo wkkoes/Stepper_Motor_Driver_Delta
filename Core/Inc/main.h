@@ -75,6 +75,8 @@ void Error_Handler(void);
 #define MOTOR_EN_GPIO_Port GPIOA
 #define DIR_Pin GPIO_PIN_12
 #define DIR_GPIO_Port GPIOC
+#define SD_MODE_Pin GPIO_PIN_2
+#define SD_MODE_GPIO_Port GPIOD
 #define SPI_EN_Pin GPIO_PIN_5
 #define SPI_EN_GPIO_Port GPIOB
 
